@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <script src="components/loader.js"></script>
+    <link rel="stylesheet" href="components/loader.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+            document.addEventListener("deviceready", function()
+            {
+                // プッシュ通知受信時のコールバックを登録します
+                window.NCMB.monaca.setHandler
+                (
+                    function(jsonData){
+                        // 送信時に指定したJSONが引数として渡されます
+                        alert("callback :::" + JSON.stringify(jsonData));
+                    }
+                );
+
+                var successCallback = function () {
+                    //端末登録後の処理
+                };
+                var errorCallback = function (err) {
+                    //端末登録でエラーが発生した場合の処理
+                };
+                // デバイストークンを取得してinstallation登録が行われます
+                // ※ YOUR_APPLICATION_KEY,YOUR_CLIENT_KEYはニフクラ mobile backendから発行されたAPIキーに書き換えてください
+                window.NCMB.monaca.setDeviceToken(
+                    "f9d50b3fa1d5b64cc5e02dea8f1e40a9108145265bce4f920cc9b3cae541cfd2",
+                    "08e567eb27d0bd9163f1f1ae12a3a62b8e7b0d60ee4c36f5f237678449f331d2",
+                    successCallback,
+                    errorCallback
+                );
+
+                // 開封通知登録の設定
+                // trueを設定すると、開封通知を行う
+                window.NCMB.monaca.setReceiptStatus(true);
+
+                alert("DeviceToken is registed");
+            },false);
+
+            function getInstallationId() {
+                // 登録されたinstallationのobjectIdを取得します。
+                window.NCMB.monaca.getInstallationId(
+                    function(id) {
+                        alert("installationID is: " + id);
+                    }
+                );
+            }
+
+            //v3.0.9以上のpluginから使用可能
+            function getDeviceToken() {
+              // 登録されたinstallationのdevice tokenを取得します。
+                window.NCMB.monaca.getDeviceToken(
+                    function(deviceToken) {
+                        alert("Device token is: " + deviceToken);
+                    }
+                );
+            }
+    </script>
+</head>
+<body>
+    <h1>PushNotification Sample</h1>
+    <br/><br/>
+    <input type="button" onClick="getInstallationId()" value="getInstallationID" /><br/>
+    <input type="button" onClick="getDeviceToken()" value="getDeviceToken" />
+</body>
+</html>
